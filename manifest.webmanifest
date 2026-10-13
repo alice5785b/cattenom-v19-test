@@ -1,0 +1,11 @@
+{
+  "name": "Renforcement musculaire Cattenom",
+  "short_name": "Renfo Cattenom",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f4f7fa",
+  "theme_color": "#075b9f",
+  "icons": [
+    {"src": "logo.png", "sizes": "1254x1254", "type": "image/png", "purpose": "any maskable"}
+  ]
+}
