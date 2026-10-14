@@ -1,0 +1,189 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cattenom · Simulation globale V19 TEST</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><style>
+:root{--b:#075b9f;--b2:#0a77c8;--y:#f5c400;--bg:#f4f7fa;--t:#183044;--m:#6b7b88}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}.app{max-width:620px;margin:auto;min-height:100vh}.head{background:linear-gradient(135deg,var(--b),var(--b2));color:white;padding:24px 18px;border-radius:0 0 24px 24px}.brand{display:flex;align-items:center;gap:13px}.logo{width:64px;height:64px;object-fit:cover;border-radius:15px;background:white}.brand h1{font-size:19px;margin:0}.brand p{font-size:13px;margin:5px 0 0}.banner{padding:13px;background:#fff3cd;border:2px solid #e0a800;text-align:center;font-weight:800;font-size:12px;line-height:1.6}main{padding:17px}.card{background:white;padding:17px;border-radius:18px;margin-bottom:14px;box-shadow:0 4px 16px #16354b12}h2{font-size:18px;margin:0 0 12px}.muted{color:var(--m);font-size:13px}.row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.session{border:1px solid #dfe8ee;border-radius:15px;padding:14px;margin:10px 0}.date{font-weight:800}button,select{font:inherit;border-radius:12px;padding:11px;border:0}button{font-weight:700;cursor:pointer}.primary{background:var(--b);color:white}.yellow{background:var(--y);color:#17334a}.ghost{background:#edf3f7;color:var(--t)}.danger{background:#feecec;color:#b71c1c}button:disabled{opacity:.45;cursor:not-allowed}select{width:100%;border:1px solid #ccd9e1;background:white;margin:8px 0 14px}.note{background:#fff8d8;border-left:4px solid var(--y);padding:11px;border-radius:10px;font-size:13px;margin-bottom:12px}.ok{background:#eaf7ee;border-left:4px solid #35a35b;padding:11px;border-radius:10px;font-size:13px;margin-top:10px}.err{color:#b71c1c;font-size:13px}.person{padding:8px 0;border-top:1px solid #edf1f4;font-size:13px}footer{text-align:center;color:#81909a;font-size:11px;padding:10px 18px 25px}
+input{width:100%;font:inherit;padding:12px;border:1px solid #ccd9e1;border-radius:12px;margin:7px 0 12px}a{color:#075b9f}details{margin-top:12px}summary{cursor:pointer;font-weight:700}#busy{margin:8px 0}</style></head><body><div class="app"><header class="head"><div class="brand"><img class="logo" src="logo.png" alt="Logo Cattenom"><div><h1>Renforcement musculaire Cattenom</h1><p>Lundi & jeudi · 12h00–13h00</p></div></div></header><div class="banner">V19 TEST · SIMULATION GLOBALE · VALIDATION UNIQUE<br><small>Personnes et séances fictives · Aucune notification · Aucune action sur les réservations réelles</small></div><main><div id="login" class="card"><h2>Connexion administrateur V19 TEST</h2><p class="muted">Utilise tes identifiants habituels de V19 TEST. Cette page doit être ouverte sur le site Netlify V19 TEST.</p><label>E-mail<input id="email" type="email" autocomplete="email"></label><label>Mot de passe<input id="password" type="password" autocomplete="current-password"></label><button id="connect" class="primary">Se connecter</button><div id="loginmsg" class="err" aria-live="polite"></div></div><div id="lab" hidden><div class="card"><div class="row"><h2>Laboratoire de réservation</h2><button id="logout" class="ghost">Déconnexion</button></div><div class="note">Les actions sont enregistrées dans <code>v19_simulation</code> uniquement. Le verrouillage est connecté à Supabase V19 TEST. Inscriptions, annulations, promotions, verrouillage et historique. Aucun accès aux réservations réelles.</div><label for="person">Personne fictive</label><select id="person"></select><div class="row"><button id="refresh" class="ghost">↻ Actualiser depuis Supabase</button><a href="index.html">Retour à V19 TEST</a></div><div id="message" aria-live="polite"></div></div><div class="card"><h2>Tableau de bord</h2><div id="dashboard" class="muted"></div><div class="row"><button id="export" class="ghost">Exporter le bilan CSV</button><button id="showhistory" class="ghost">Afficher le journal global</button></div><div id="history" hidden></div></div><div class="card"><h2>Séances fictives</h2><div id="sessions"></div></div><div class="card" id="adminpanel"><h2>Administration fictive</h2><p class="muted">Toutes les actions ci-dessous agissent uniquement sur v19_simulation. Aucune invitation, aucun e-mail.</p><details open><summary>Utilisateurs fictifs</summary><label>Nom de la nouvelle personne<input id="adminname" maxlength="100" placeholder="Utilisateur TEST 36"></label><button class="primary" id="adminadd">Ajouter</button><div id="adminpeople"></div></details><details><summary>Séances habituelles et exceptionnelles</summary><label>Date de la nouvelle séance<input id="admindate" type="date"></label><label>Type<select id="admintype"><option value="habituelle">Habituelle</option><option value="exceptionnelle">Exceptionnelle</option></select></label><button class="primary" id="admincreate">Créer la séance</button><div id="adminsessions"></div></details><details><summary>Listes d’attente</summary><div id="adminwaitlists"></div></details><details><summary>Historique des séances et annulations</summary><div id="adminhistory"></div></details><details><summary>Journal des annulations</summary><div id="adminjournal"></div></details><details id="infos-panel"><summary>Informations</summary><p class="muted">Informations fictives enregistrées dans Supabase V19 TEST. Aucun message réel envoyé.</p><label>Titre<input id="info-title" maxlength="200" placeholder="Titre de l’information fictive"></label><label>Contenu<textarea id="info-content" maxlength="5000" rows="3" style="width:100%;font:inherit;padding:12px;border:1px solid #ccd9e1;border-radius:12px" placeholder="Texte de test"></textarea></label><div class="row"><button id="info-save" class="primary">Ajouter l’information</button><button id="info-reset" class="ghost">Annuler la modification</button><button id="info-refresh" class="ghost">Actualiser les informations</button></div><div id="info-msg" role="status"></div><div id="info-list"></div></details><div id="adminmsg" role="status"></div></div><div class="card"><h2>Validation globale avant étape 5</h2><p class="muted">Contrôler en une seule campagne les fonctions fictives. Cocher chaque résultat vérifié. Cette liste est locale et ne constitue pas une validation automatique.</p><div id="globalcheck"></div><p id="globalstatus" class="note"></p></div></div></main><footer>20 places · 10 en liste d’attente · Simulation fictive uniquement · Pas une version de production</footer></div><script>
+'use strict';
+const EXPECTED='uqyvfkjgitufaxmswjzv';
+const login=document.getElementById('login'),lab=document.getElementById('lab'),person=document.getElementById('person'),sessions=document.getElementById('sessions'),message=document.getElementById('message');
+let sb=null,state=null,busy=false;
+function notify(t,err=false){message.className=err?'err':'ok';message.textContent=t}
+function loginError(t){document.getElementById('loginmsg').textContent=t}
+function safeConfig(){try{const u=new URL(window.SUPABASE_URL);return u.protocol==='https:'&&u.hostname===EXPECTED+'.supabase.co'&&typeof window.SUPABASE_ANON_KEY==='string'&&window.SUPABASE_ANON_KEY.startsWith('sb_publishable_')}catch{return false}}
+if(!safeConfig()||!window.supabase){loginError('Configuration V19 TEST indisponible. Publie simulation.html à côté de config.js sur le site V19 TEST.')}else{sb=window.supabase.createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});init()}
+async function init(){document.getElementById('connect').onclick=async()=>{loginError('');const btn=document.getElementById('connect');btn.disabled=true;try{const {error}=await sb.auth.signInWithPassword({email:document.getElementById('email').value.trim(),password:document.getElementById('password').value});if(error)throw error;await openLab()}catch(e){loginError('Connexion refusée : '+e.message)}finally{btn.disabled=false}};document.getElementById('refresh').onclick=load;person.onchange=()=>{sessionStorage.setItem("v19_sim_personne",person.value);render()};document.getElementById("export").onclick=exportCsv;document.getElementById("showhistory").onclick=()=>{const h=document.getElementById("history");h.hidden=!h.hidden;renderHistory()};document.getElementById('logout').onclick=async()=>{await sb.auth.signOut();state=null;lab.hidden=true;login.hidden=false};const {data:{session}}=await sb.auth.getSession();if(session)await openLab()}
+async function openLab(){const {data,error}=await sb.rpc('my_profile');const profile=Array.isArray(data)?data[0]:data;if(error||!profile?.is_admin||!profile?.is_active){login.hidden=false;lab.hidden=true;loginError('Accès réservé à un administrateur actif de V19 TEST.');return}login.hidden=true;lab.hidden=false;await load()}
+async function load(){if(busy)return;busy=true;document.getElementById('refresh').disabled=true;try{const {data,error}=await sb.rpc('v19_sim_etat');if(error)throw error;state=data;person.replaceChildren();for(const p of [...(state.personnes||[])].sort((a,b)=>a.nom.localeCompare(b.nom))){const o=document.createElement('option');o.value=String(p.id);o.textContent=p.nom;person.append(o)}const previous=sessionStorage.getItem("v19_sim_personne");if(previous&&[...person.options].some(o=>o.value===previous))person.value=previous;render();notify('Données de simulation chargées depuis Supabase V19 TEST.')}catch(e){notify('Lecture impossible : '+e.message,true)}finally{busy=false;document.getElementById('refresh').disabled=false}}
+async function action(rpc,args,success){if(busy)return;busy=true;document.querySelectorAll('#lab button').forEach(b=>b.disabled=true);try{const {data,error}=await sb.rpc(rpc,args);if(error)throw error;const {data:fresh,error:readError}=await sb.rpc('v19_sim_etat');if(readError)throw readError;state=fresh;render();notify(success(data))}catch(e){notify('Action refusée : '+e.message,true)}finally{busy=false;document.querySelectorAll('#lab button').forEach(b=>b.disabled=false);render()}}
+function render(){if(!state)return;renderDashboard();renderHistory();sessions.replaceChildren();const selected=Number(person.value);for(const s of [...(state.seances||[])].sort((a,b)=>a.date_seance.localeCompare(b.date_seance))){const all=(state.inscriptions||[]).filter(x=>x.seance_id===s.id).sort((a,b)=>a.cree_le.localeCompare(b.cree_le)||a.id-b.id),booked=all.filter(x=>x.statut==='inscrit'),waiting=all.filter(x=>x.statut==='attente'),mine=all.find(x=>x.personne_id===selected),people=new Map(state.personnes.map(x=>[x.id,x.nom]));const card=document.createElement('div');card.className='session';const heading=document.createElement('div');heading.className='date';heading.textContent=new Date(s.date_seance+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});card.append(heading);const meta=document.createElement('p');meta.className='muted';meta.textContent=`${s.type_seance==='exceptionnelle'?'Séance exceptionnelle':'Séance habituelle'} · ${booked.length}/20 inscrits · ${waiting.length}/10 en attente${s.verrouillee?' · 🔒 Verrouillée':''}${s.annulee?' · Annulée':''}`;card.append(meta);const row=document.createElement('div');row.className='row';const add=document.createElement('button');add.className='yellow';add.textContent=mine?'Déjà inscrit(e) / en attente':'Inscrire cette personne';add.disabled=busy||!!mine||s.verrouillee||s.annulee||(booked.length===20&&waiting.length===10);add.onclick=()=>action('v19_sim_inscrire',{p_seance:s.id,p_personne:selected},status=>status==='attente'?'Ajout en liste d’attente enregistré.':'Inscription enregistrée.');row.append(add);const remove=document.createElement('button');remove.className='danger';remove.textContent='Annuler';remove.disabled=busy||!mine||s.verrouillee;remove.onclick=()=>{if(confirm('Annuler cette inscription fictive dans Supabase V19 TEST ?'))action('v19_sim_annuler',{p_seance:s.id,p_personne:selected},()=> 'Annulation enregistrée. Liste d’attente actualisée.')};row.append(remove);const lock=document.createElement('button');lock.className='ghost';lock.textContent=s.verrouillee?'🔓 Déverrouiller':'🔒 Verrouiller';lock.disabled=busy;lock.onclick=()=>{const operation=s.verrouillee?'déverrouiller':'verrouiller';if(confirm('Voulez-vous '+operation+' cette séance fictive dans Supabase V19 TEST ?'))action('v19_sim_verrouiller',{p_seance:s.id,p_verrouiller:!s.verrouillee},result=>result.verrouillee?'Séance fictive verrouillée dans Supabase.':'Séance fictive déverrouillée dans Supabase.')};row.append(lock);card.append(row);const detail=document.createElement('details');const summary=document.createElement('summary');const cancels=(state.annulations||[]).filter(x=>x.seance_id===s.id);summary.textContent=`Voir les participants (${booked.length} inscrits, ${waiting.length} en attente, ${cancels.length} annulations)`;detail.append(summary);for(const [title,arr] of [['Inscrits',booked],['Liste d’attente',waiting],['Journal des annulations',cancels]]){const h=document.createElement('h3');h.style.fontSize='14px';h.textContent=title;detail.append(h);if(!arr.length){const empty=document.createElement('div');empty.className='muted';empty.textContent='Aucun';detail.append(empty)}arr.forEach((entry,i)=>{const line=document.createElement('div');line.className='person';line.textContent=(title==='Liste d’attente'?`${i+1}. `:'')+(people.get(entry.personne_id)||'Personne inconnue')+(title==='Journal des annulations'?` (${entry.ancien_statut})`:'');detail.append(line)})}card.append(detail);sessions.append(card)}}
+
+function renderDashboard(){
+ const el=document.getElementById('dashboard');if(!state)return;
+ const inscriptions=state.inscriptions||[],cancels=state.annulations||[],ss=state.seances||[];
+ el.textContent=`${(state.personnes||[]).length} personnes fictives · ${ss.length} séances · ${inscriptions.filter(x=>x.statut==='inscrit').length} inscriptions · ${inscriptions.filter(x=>x.statut==='attente').length} en attente · ${cancels.length} annulations · ${ss.filter(x=>x.verrouillee).length} séance(s) verrouillée(s)`;
+}
+function renderHistory(){
+ const el=document.getElementById('history');if(!state)return;el.replaceChildren();
+ const people=new Map((state.personnes||[]).map(p=>[p.id,p.nom]));
+ const dates=new Map((state.seances||[]).map(s=>[s.id,s.date_seance]));
+ const rows=[...(state.annulations||[])].sort((a,b)=>String(b.annule_le).localeCompare(String(a.annule_le)));
+ if(!rows.length){el.textContent='Aucune annulation fictive enregistrée.';return}
+ for(const a of rows){const d=document.createElement('div');d.className='person';d.textContent=`${String(a.annule_le).slice(0,16).replace('T',' ')} · ${people.get(a.personne_id)||'Inconnu'} · ${dates.get(a.seance_id)||'Séance inconnue'} · ancien statut : ${a.ancien_statut}`;el.append(d)}
+}
+function exportCsv(){
+ if(!state)return;const people=new Map((state.personnes||[]).map(p=>[p.id,p.nom]));const dates=new Map((state.seances||[]).map(s=>[s.id,s.date_seance]));
+ const lines=[['type','date_seance','personne','statut','date_operation']];
+ for(const x of state.inscriptions||[])lines.push(['inscription',dates.get(x.seance_id)||'',people.get(x.personne_id)||'',x.statut,x.cree_le||'']);
+ for(const x of state.annulations||[])lines.push(['annulation',dates.get(x.seance_id)||'',people.get(x.personne_id)||'',x.ancien_statut,x.annule_le||'']);
+ const csv='\uFEFF'+lines.map(row=>row.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(';')).join('\r\n');
+ const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='bilan-simulation-v19-test.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+// Administration fictive : RPC sécurisée déjà installée.
+const adminPanel=document.getElementById('adminpanel');
+function adminMsg(txt,bad=false){const el=document.getElementById('adminmsg');el.className=bad?'err':'ok';el.textContent=txt}
+async function adminCall(p_action,params={},messageOk='Action enregistrée'){
+ if(busy)return;
+ busy=true;adminPanel.querySelectorAll('button').forEach(b=>b.disabled=true);
+ try{
+   const {error}=await sb.rpc('v19_sim_admin',{p_action,...params});if(error)throw error;
+   const {data,error:readError}=await sb.rpc('v19_sim_etat');if(readError)throw readError;
+   state=data;render();adminMsg(messageOk);
+ }catch(e){adminMsg('Action refusée : '+e.message,true)}
+ finally{busy=false;adminPanel.querySelectorAll('button').forEach(b=>b.disabled=false)}
+}
+function adminButton(text,fn,css='ghost'){const b=document.createElement('button');b.className=css;b.textContent=text;b.onclick=fn;return b}
+function renderAdmin(){
+ if(!state)return;
+ const ppl=document.getElementById('adminpeople'),ses=document.getElementById('adminsessions');
+ ppl.replaceChildren();ses.replaceChildren();
+ for(const p of [...(state.personnes||[])].sort((a,b)=>a.nom.localeCompare(b.nom))){
+   const r=document.createElement('div');r.className='person row';
+   const name=document.createElement('span');name.textContent=p.nom+(p.admin?' · Administrateur protégé':p.actif?' · Actif':' · Inactif');r.append(name);
+   if(!p.admin){
+     r.append(adminButton(p.actif?'Désactiver':'Réactiver',()=>adminCall('activer_personne',{p_personne:p.id,p_actif:!p.actif},'Statut modifié.')));
+     r.append(adminButton('Supprimer',()=>{if(confirm('Supprimer '+p.nom+' ? Refus automatique si historique présent.'))adminCall('supprimer_personne',{p_personne:p.id},'Personne supprimée.')},'danger'));
+   }
+   ppl.append(r);
+ }
+ for(const s of [...(state.seances||[])].sort((a,b)=>a.date_seance.localeCompare(b.date_seance))){
+   const r=document.createElement('div');r.className='session';
+   const h=document.createElement('div');h.className='date';h.textContent=s.date_seance+' · '+(s.type_seance==='exceptionnelle'?'Exceptionnelle':'Habituelle')+(s.annulee?' · Annulée':'');r.append(h);
+   const date=document.createElement('input');date.type='date';date.value=s.date_seance;date.setAttribute('aria-label','Nouvelle date pour la séance '+s.date_seance);r.append(date);
+   const buttons=document.createElement('div');buttons.className='row';
+   buttons.append(adminButton('Déplacer',()=>{if(!date.value)return adminMsg('Choisir une date.',true);if(confirm('Déplacer cette séance fictive ?'))adminCall('deplacer_seance',{p_seance:s.id,p_date:date.value},'Séance déplacée.')}));
+   buttons.append(adminButton(s.annulee?'Restaurer':'Annuler la séance',()=>{if(confirm('Confirmer cette action sur la séance fictive ?'))adminCall(s.annulee?'restaurer_seance':'annuler_seance',{p_seance:s.id},'Séance actualisée.')},s.annulee?'primary':'danger'));
+   r.append(buttons);ses.append(r);
+ }
+ const map=new Map((state.personnes||[]).map(p=>[p.id,p.nom]));
+ const dates=new Map((state.seances||[]).map(s=>[s.id,s.date_seance]));
+ const hist=document.getElementById('adminhistory');hist.replaceChildren();
+ for(const s of [...(state.seances||[])].sort((a,b)=>a.date_seance.localeCompare(b.date_seance))){
+   const count=(state.inscriptions||[]).filter(i=>i.seance_id===s.id).length;
+   const e=document.createElement('div');e.className='person';e.textContent=`${s.date_seance} · ${s.type_seance} · ${count} inscription(s) ou attente(s) · ${s.annulee?'annulée':'active'}${s.verrouillee?' · verrouillée':''}`;hist.append(e);
+ }
+ const wait=document.getElementById('adminwaitlists');wait.replaceChildren();
+ for(const s of [...(state.seances||[])].sort((a,b)=>a.date_seance.localeCompare(b.date_seance))){
+   const queue=(state.inscriptions||[]).filter(i=>i.seance_id===s.id&&i.statut==='attente').sort((a,b)=>String(a.cree_le).localeCompare(String(b.cree_le))||a.id-b.id);
+   const item=document.createElement('div');item.className='session';
+   const heading=document.createElement('strong');heading.textContent=s.date_seance+' · '+queue.length+'/10 en attente';item.append(heading);
+   if(!queue.length){const empty=document.createElement('p');empty.className='muted';empty.textContent='Aucune personne en attente';item.append(empty)}
+   for(const [i,entry] of queue.entries()){const line=document.createElement('div');line.className='person';line.textContent=(i+1)+'. '+(map.get(entry.personne_id)||'Personne inconnue');item.append(line)}
+   wait.append(item);
+ }
+ const journal=document.getElementById('adminjournal');journal.replaceChildren();
+ const cancellations=[...(state.annulations||[])].sort((a,b)=>String(b.annule_le).localeCompare(String(a.annule_le)));
+ if(!cancellations.length){journal.textContent='Aucune annulation fictive enregistrée.'}
+ for(const a of cancellations){const e=document.createElement('div');e.className='person';e.textContent=`${String(a.annule_le).slice(0,16).replace('T',' ')} · ${map.get(a.personne_id)||'Inconnu'} · ${dates.get(a.seance_id)||'Séance inconnue'} · ${a.ancien_statut}`;journal.append(e)}
+}
+const originalRender=render;
+render=function(){originalRender();renderAdmin()};
+document.getElementById('adminadd').onclick=()=>{
+ const name=document.getElementById('adminname').value.trim();
+ if(!name)return adminMsg('Indique le nom de la personne fictive.',true);
+ adminCall('ajouter_personne',{p_nom:name},'Personne fictive ajoutée.');
+};
+document.getElementById('admincreate').onclick=()=>{
+ const date=document.getElementById('admindate').value;
+ const type=document.getElementById('admintype').value;
+ if(!date)return adminMsg('Choisis une date.',true);
+ adminCall('creer_seance',{p_date:date,p_type:type},'Séance fictive créée.');
+};
+
+// Informations fictives : RPC dédiée, accessible aux administrateurs uniquement.
+let infos=[], infoEditId=null, infoBusy=false;
+const infoTitle=document.getElementById('info-title');
+const infoContent=document.getElementById('info-content');
+const infoList=document.getElementById('info-list');
+function infoMessage(t,err=false){const el=document.getElementById('info-msg');el.className=err?'err':'ok';el.textContent=t}
+function resetInfo(){infoEditId=null;infoTitle.value='';infoContent.value='';document.getElementById('info-save').textContent='Ajouter l’information'}
+async function loadInfos(){
+ if(!sb)return;
+ try{
+  const {data,error}=await sb.rpc('v19_sim_informations',{p_action:'lister'});
+  if(error)throw error;
+  infos=Array.isArray(data)?data:[];
+  renderInfos();
+ }catch(e){infoMessage('Informations indisponibles : '+e.message,true)}
+}
+function renderInfos(){
+ infoList.replaceChildren();
+ if(!infos.length){const p=document.createElement('p');p.className='muted';p.textContent='Aucune information fictive.';infoList.append(p);return}
+ for(const item of infos){
+  const wrap=document.createElement('div');wrap.className='session';
+  const title=document.createElement('strong');title.textContent=item.titre;
+  const body=document.createElement('p');body.textContent=item.contenu;body.style.whiteSpace='pre-wrap';
+  const row=document.createElement('div');row.className='row';
+  const edit=document.createElement('button');edit.className='ghost';edit.textContent='Modifier';
+  edit.onclick=()=>{infoEditId=item.id;infoTitle.value=item.titre;infoContent.value=item.contenu;document.getElementById('info-save').textContent='Enregistrer la modification';document.getElementById('infos-panel').open=true;infoTitle.focus()};
+  const del=document.createElement('button');del.className='danger';del.textContent='Supprimer';
+  del.onclick=()=>{if(confirm('Supprimer cette information fictive ?'))infoWrite('supprimer',{p_id:item.id})};
+  row.append(edit,del);wrap.append(title,body,row);infoList.append(wrap);
+ }
+}
+async function infoWrite(p_action,params){
+ if(infoBusy)return;
+ infoBusy=true;
+ const controls=document.querySelectorAll('#infos-panel button');controls.forEach(x=>x.disabled=true);
+ try{
+  const {error}=await sb.rpc('v19_sim_informations',{p_action,...params});
+  if(error)throw error;
+  resetInfo();await loadInfos();infoMessage('Information fictive enregistrée dans Supabase.');
+ }catch(e){infoMessage('Action refusée : '+e.message,true)}
+ finally{infoBusy=false;controls.forEach(x=>x.disabled=false)}
+}
+document.getElementById('info-save').onclick=()=>{
+ const titre=infoTitle.value.trim(),contenu=infoContent.value.trim();
+ if(!titre||!contenu)return infoMessage('Titre et contenu obligatoires.',true);
+ infoWrite(infoEditId===null?'ajouter':'modifier',{
+  ...(infoEditId===null?{}:{p_id:infoEditId}),p_titre:titre,p_contenu:contenu
+ });
+};
+document.getElementById('info-reset').onclick=resetInfo;
+document.getElementById('info-refresh').onclick=loadInfos;
+// Campagne de validation unique : cases manuelles, jamais présentées comme tests automatiques.
+const validationItems=[
+ 'Inscription persistante après actualisation',
+ 'Annulation persistante après actualisation',
+ 'Promotion automatique de la liste d’attente',
+ 'Verrouillage et déverrouillage persistants',
+ 'Ajout, activation, désactivation et suppression fictifs',
+ 'Création, déplacement, annulation et restauration des séances',
+ 'Séances exceptionnelles et liste d’attente',
+ 'Historique des séances et journal des annulations',
+ 'Informations : ajout, modification, suppression et persistance',
+ 'Personne sélectionnée conservée après les opérations'
+];
+const checkRoot=document.getElementById('globalcheck');
+const validationChecks=[];
+for(const [index,label] of validationItems.entries()){
+ const line=document.createElement('label');line.className='person';line.style.display='flex';line.style.gap='10px';line.style.alignItems='center';
+ const cb=document.createElement('input');cb.type='checkbox';cb.style.width='auto';cb.style.margin='0';cb.checked=sessionStorage.getItem('v19_check_'+index)==='1';
+ cb.onchange=()=>{sessionStorage.setItem('v19_check_'+index,cb.checked?'1':'0');updateValidation()};
+ line.append(cb,document.createTextNode(label));checkRoot.append(line);validationChecks.push(cb);
+}
+function updateValidation(){const n=validationChecks.filter(c=>c.checked).length;document.getElementById('globalstatus').textContent=n+'/'+validationChecks.length+' contrôles confirmés manuellement. '+(n===validationChecks.length?'Simulation fictive validée ; reste à intégrer et contrôler l’application finale avant l’étape 5.':'Les points non cochés restent à vérifier.')}
+updateValidation();
+const previousOpenLab=openLab;
+openLab=async function(){await previousOpenLab();if(!lab.hidden)await loadInfos()};
+const previousLoad=load;
+load=async function(){await previousLoad();if(!lab.hidden)await loadInfos()};
+</script></body></html>
