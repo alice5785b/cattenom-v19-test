@@ -1,0 +1,43 @@
+name: Préparer paquet V19 Netlify (sans déploiement)
+on:
+  push:
+    branches: [v19-test-github-pages]
+    paths:
+      - 'preparation-netlify/**'
+      - '.github/workflows/package-v19-netlify.yml'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assemblage hors ligne
+        run: node preparation-netlify/build-v19-netlify.mjs
+      - name: Contrôles statiques (aucune publication)
+        shell: bash
+        run: |
+          set -euo pipefail
+          d=preparation-netlify/dist-v19
+          test -s "$d/index.html"
+          test -s "$d/config.js"
+          test -s "$d/onesignal-v19-bridge.js"
+          test -s "$d/onesignalsdkworker.js"
+          test -s "$d/netlify.toml"
+          test -s "$d/logo.png"
+          grep -q 'uqyvfkjgitufaxmswjzv.supabase.co' "$d/config.js"
+          grep -q 'v19_set_onesignal_subscription_id' "$d/index.html"
+          grep -q 'OneSignalSDK.page.js' "$d/index.html"
+          grep -q 'OneSignalSDK.sw.js' "$d/onesignalsdkworker.js"
+          if grep -Eq 'ONESIGNAL_REST_API_KEY|DISPATCHER_SECRET|service_role' "$d/config.js"; then exit 1; fi
+          echo "Contrôles statiques réussis. Aucun déploiement."
+      - name: Conserver le paquet ZIP comme artefact GitHub
+        uses: actions/upload-artifact@v4
+        with:
+          name: paquet-v19-netlify-sans-deploiement
+          path: preparation-netlify/dist-v19/
+          retention-days: 14
