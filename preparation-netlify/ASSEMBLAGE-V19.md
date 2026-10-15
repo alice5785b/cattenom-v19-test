@@ -25,3 +25,6 @@ Le code `connectV19Push()` est déjà présent dans `index.html` et ne s'exécut
 
 **Aucune clé REST OneSignal ni DISPATCHER_SECRET ne doit être placée dans les fichiers du site.**
 **Ne pas activer `NOTIFICATIONS_ENABLED` ou `v19_dispatch_config.enabled` avant les tests de bout en bout.**
+
+## Décision de conservation des données
+La V19 définitive utilisera le projet Supabase existant `uqyvfkjgitufaxmswjzv`. Conserver intégralement les comptes et toutes les inscriptions V19 existantes. Aucune purge, réinitialisation ou migration de données. V18 Production reste inchangée jusqu'à autorisation explicite de bascule.
