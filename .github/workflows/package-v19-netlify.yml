@@ -33,6 +33,10 @@ jobs:
           grep -q 'v19_set_onesignal_subscription_id' "$d/index.html"
           grep -q 'OneSignalSDK.page.js' "$d/index.html"
           grep -q 'OneSignalSDK.sw.js' "$d/onesignalsdkworker.js"
+          # V19 définitive : aucune simulation, et push conservé après déconnexion.
+          test ! -e "$d/simulation-v19-test-validation-globale.html"
+          if grep -q 'simulation-v19-test-validation-globale.html' "$d/index.html"; then exit 1; fi
+          if grep -q 'V19PushBridge.disconnect()' "$d/index.html"; then exit 1; fi
           if grep -Eq 'ONESIGNAL_REST_API_KEY|DISPATCHER_SECRET|service_role' "$d/config.js"; then exit 1; fi
           echo "Contrôles statiques réussis. Aucun déploiement."
       - name: Conserver le paquet ZIP comme artefact GitHub
