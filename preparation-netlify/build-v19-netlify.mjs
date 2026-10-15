@@ -19,11 +19,7 @@ html = html.replace(/<div class="testbanner">.*?<\/div>/s, '');
 html = html.replaceAll('V19 TEST', 'V19');
 // La version définitive n'expose aucun lien vers la simulation fictive.
 html = html.replace(/<a href="simulation-v19-test-validation-globale\.html"[^>]*>.*?<\/a>/s, '');
-// Déconnecter aussi l'identité OneSignal lors de la déconnexion de l'application.
-const logoutBefore = 'async function logout(){await sb.auth.signOut();me=null;login()}';
-const logoutAfter = 'async function logout(){if(window.V19PushBridge)await window.V19PushBridge.disconnect();await sb.auth.signOut();me=null;login()}';
-if (!html.includes(logoutBefore)) throw Error('Fonction logout V19 introuvable : arrêt');
-html = html.replace(logoutBefore, logoutAfter);
+// Conserver l'abonnement push du téléphone lors d'une simple déconnexion de l'application.
 if (html.includes('simulation-v19-test-validation-globale.html')) throw Error('Lien simulation encore présent');
 await mkdir(output, {recursive:true});
 await writeFile(join(output, 'index.html'), html);
