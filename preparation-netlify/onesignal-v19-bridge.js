@@ -9,6 +9,8 @@
   const PRODUCTION_ORIGIN = 'https://renfomusculairecattenom.netlify.app';
   const APP_ID = '2232e30e-1fed-4d48-8b26-824b718838a9';
   let initialized = false;
+  let connectedUserId = null;
+  let listenersAttached = false;
   window.V19PushBridge = {
     async connect(userId, saveSubscription) {
       if (location.origin !== PRODUCTION_ORIGIN) return;
@@ -24,13 +26,17 @@
           initialized = true;
         }
         await OneSignal.login(String(userId));
+        connectedUserId = String(userId);
         const save = async () => {
           const id = OneSignal.User.PushSubscription.id;
           const opted = OneSignal.User.PushSubscription.optedIn;
           if (opted && id) await saveSubscription(id);
         };
-        OneSignal.User.PushSubscription.addEventListener('change', save);
-        OneSignal.Notifications.addEventListener('permissionChange', save);
+        if (!listenersAttached) {
+          OneSignal.User.PushSubscription.addEventListener('change', save);
+          OneSignal.Notifications.addEventListener('permissionChange', save);
+          listenersAttached = true;
+        }
         await save();
       });
     },
@@ -38,7 +44,8 @@
       if (location.origin !== PRODUCTION_ORIGIN) return;
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       window.OneSignalDeferred.push(async function (OneSignal) {
-        await OneSignal.logout();
+        if (connectedUserId) await OneSignal.logout();
+        connectedUserId = null;
       });
     }
   };
