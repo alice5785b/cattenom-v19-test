@@ -136,6 +136,7 @@ async function changeExtraSession(d,original){
 
  const nd=document.getElementById('newSessionDate')?.value;
  if(!nd)return alert('Choisissez une date.');
+ if(nd===d)return alert('Choisissez une date différente.');
  if(!await sessionConfirm('Déplacer cette séance exceptionnelle au '+fr(nd)+' ? Vérifiez les inscriptions après déplacement.'))return;
  const {error}=await sb.rpc('admin_move_extra_session_by_id',{p_session_id:original,p_new_date:nd});
  if(error)return alert(error.message);
@@ -181,7 +182,7 @@ async function adminMoveSession(d){
   let nd=document.getElementById('newSessionDate')?.value;
   if(!nd)return alert('Choisissez une nouvelle date.');
   if(nd===d)return alert('Choisissez une date différente.');
-  if(!await sessionConfirm(`Déplacer la séance du ${fr(d)} au ${fr(nd)} ? Les inscriptions seront conservées.`))return;
+  if(!await sessionConfirm(`Déplacer la séance du ${fr(d)} au ${fr(nd)} ? Vérifiez les inscriptions après déplacement.`))return;
   let original=d;
   let {data:identity,error:xe}=await sb.rpc('admin_session_identity',{p_session_date:d});
   if(xe)return alert('Impossible de vérifier la séance : '+xe.message);
@@ -189,16 +190,16 @@ async function adminMoveSession(d){
   original=identity?.original_date||d;
   let {error}=await sb.rpc('admin_move_regular_session',{p_original_date:original,p_new_date:nd});
   if(error)return alert(error.message);
-  alert('Séance déplacée. Les inscriptions sont conservées.');
-  admin(1);
+  alert('Séance déplacée dans V19 TEST. Vérifiez les inscriptions.');
+  await admin(0);
 }
 async function adminRestoreSessionDate(d,original){
 
   if(!await sessionConfirm(`Rétablir la date initiale du ${fr(original)} ?`))return;
   let {error}=await sb.rpc('admin_move_regular_session',{p_original_date:original,p_new_date:original});
   if(error)return alert(error.message);
-  alert('Séance remise à sa date initiale. Les inscriptions sont conservées.');
-  admin(1);
+  alert('Séance remise à sa date initiale dans V19 TEST. Vérifiez les inscriptions.');
+  await admin(0);
 }
 async function adminCancelSession(d){
 
@@ -211,10 +212,17 @@ async function adminCancelSession(d){
   let {error}=await sb.rpc('admin_cancel_regular_session',{p_original_date:original});
   if(error)return alert(error.message);
   alert('Opération terminée dans V19 TEST. Vérifiez les réservations de la séance.');
-  admin(1);
+  await admin(0);
 }
 async function adminBook(d){
-if(!pick.value)return;let {data,error}=await sb.rpc('admin_book_user',{p_session_date:d,p_user_id:pick.value});if(error)return alert(error.message);alert(data==='waitlist'?'Ajouté en liste d’attente.':'Ajouté à la séance.');sessionDetail(d)}
+const selected=document.getElementById('pick')?.value;
+if(!selected)return;
+localStorage.setItem(V19_SELECTION_KEY,selected);
+const {data,error}=await sb.rpc('admin_book_user',{p_session_date:d,p_user_id:selected});
+if(error)return alert(error.message);
+alert(data==='waitlist'?'Ajouté en liste d’attente.':'Ajouté à la séance.');
+await sessionDetail(d);
+}
 async function adminRemove(d,id){
 if(!id||id==='undefined')return alert('Identifiant participant manquant. Aucun retrait effectué.');if(!confirm('Retirer cette personne de la séance ?'))return;let {error}=await sb.rpc('admin_remove_user',{p_session_date:d,p_user_id:id});if(error)return alert(error.message);sessionDetail(d)}
 let passwordFlow=false;
