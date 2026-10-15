@@ -136,21 +136,21 @@ async function changeExtraSession(d,original){
 
  const nd=document.getElementById('newSessionDate')?.value;
  if(!nd)return alert('Choisissez une date.');
- if(!await sessionConfirm('Déplacer cette séance exceptionnelle au '+fr(nd)+' ?'))return;
+ if(!await sessionConfirm('Déplacer cette séance exceptionnelle au '+fr(nd)+' ? Vérifiez les inscriptions après déplacement.'))return;
  const {error}=await sb.rpc('admin_move_extra_session_by_id',{p_session_id:original,p_new_date:nd});
  if(error)return alert(error.message);
  await admin(1);
 }
 async function cancelExtraSession(original){
 
- if(!await sessionConfirm('Annuler cette séance exceptionnelle ? Les inscriptions seront conservées.'))return;
+ if(!await sessionConfirm('Annuler cette séance exceptionnelle ? Vérifiez le devenir des inscriptions avant de confirmer.'))return;
  const {error}=await sb.rpc('admin_cancel_extra_session_by_id',{p_session_id:original});
  if(error)return alert(error.message);
  await admin(1);
 }
 async function restoreExtraSessionById(id){
 
- if(!await sessionConfirm('Rétablir cette séance exceptionnelle avec ses participants inscrits ?'))return;
+ if(!await sessionConfirm('Rétablir cette séance exceptionnelle ? Vérifiez les inscriptions après restauration.'))return;
  const {error}=await sb.rpc('admin_restore_extra_session_by_id',{p_session_id:id});
  if(error)return alert(error.message);
  await admin(1);
@@ -202,7 +202,7 @@ async function adminRestoreSessionDate(d,original){
 }
 async function adminCancelSession(d){
 
-  if(!await sessionConfirm(`Annuler la séance du ${fr(d)} ? Les inscriptions seront conservées.`))return;
+  if(!await sessionConfirm(`Annuler la séance du ${fr(d)} ? Vérifiez le devenir des inscriptions après l’opération.`))return;
 
   let {data:identity,error:originError}=await sb.rpc('admin_session_identity',{p_session_date:d});
   if(originError)return alert(originError.message);
@@ -210,7 +210,7 @@ async function adminCancelSession(d){
   const original=identity?.original_date||d;
   let {error}=await sb.rpc('admin_cancel_regular_session',{p_original_date:original});
   if(error)return alert(error.message);
-  alert('Séance annulée dans TEST. Les réservations sont conservées ; aucune notification n’a été envoyée.');
+  alert('Opération terminée dans V19 TEST. Vérifiez les réservations de la séance.');
   admin(1);
 }
 async function adminBook(d){
