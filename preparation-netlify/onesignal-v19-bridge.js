@@ -43,3 +43,12 @@
     }
   };
 })();
+
+// Raccordement Supabase à utiliser par la version Netlify définitive.
+// Exemple d'appel après boot(), quand me.id est connu :
+// await V19PushBridge.connect(me.id, async subscriptionId => {
+//   const {error} = await sb.rpc('v19_set_onesignal_subscription_id',
+//      {p_subscription_id: subscriptionId});
+//   if (error) throw error;
+// });
+// Ne pas activer cette connexion sur GitHub Pages TEST.
