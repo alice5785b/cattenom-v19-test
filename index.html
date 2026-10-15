@@ -14,8 +14,10 @@ function rememberV19Person(){const el=document.getElementById('pick');if(el)loca
 function restoreV19Person(){const el=document.getElementById('pick');if(!el)return;const saved=localStorage.getItem(V19_SELECTION_KEY);if(saved&&[...el.options].some(o=>o.value===saved))el.value=saved;el.addEventListener('change',rememberV19Person);}
 // OneSignal V19 : inactif sur GitHub Pages TEST, prêt pour Netlify définitif.
 async function connectV19Push(){
-  if(location.origin!=='https://renfomusculairecattenom.netlify.app'||!window.V19PushBridge||!me?.id)return;
-  await window.V19PushBridge.connect(me.id,async subscriptionId=>{
+  if(location.origin!=='https://renfomusculairecattenom.netlify.app'||!window.V19PushBridge)return;
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session?.user?.id)return;
+  await window.V19PushBridge.connect(session.user.id,async subscriptionId=>{
     const {error}=await sb.rpc('v19_set_onesignal_subscription_id',{p_subscription_id:subscriptionId});
     if(error)console.warn('Abonnement OneSignal V19 non enregistré',error.message);
   });
