@@ -1,0 +1,8 @@
+# Modèle de configuration pour le futur déploiement V19 sur Netlify.
+# Ce fichier est volontairement isolé du site V19 TEST.
+[[headers]]
+  for = "/OneSignalSDKWorker.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Service-Worker-Allowed = "/"
+    Content-Type = "application/javascript; charset=utf-8"
