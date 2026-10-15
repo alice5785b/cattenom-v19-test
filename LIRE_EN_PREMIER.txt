@@ -1,0 +1,17 @@
+V19 TEST — CORRECTIF GROUPE DES BLOCAGES DE LECTURE SEULE
+
+Contenu : index.html, config.js, logo.png
+Source : V19_TEST_CORRECTIF_INSCRIPTION_ANNULATION précédemment transmis.
+
+17 barrières artificielles lecture seule retirées : mot de passe, gestion des utilisateurs, séances exceptionnelles, verrouillage, déplacement/annulation, ajouts/retraits administrateur. Activation de lien auth rétablie. Réservation et annulation personnelles conservées.
+
+IMPORTANT : seul le projet Supabase TEST uqyvfkjgitufaxmswjzv est autorisé par le code.
+Ne jamais installer sur V18 Production.
+Les boutons activés nécessitent les fonctions RPC existantes et les droits adéquats dans Supabase TEST. Ce ZIP n'est pas une preuve de tests de bout en bout.
+Invitations : le bouton Ajouter un utilisateur ajoute à la liste autorisée mais N'ENVOIE PAS d'email ; cette fonctionnalité demeure incomplète.
+Restauration d'une date régulière : appel RPC existant potentiellement incompatible avec une restauration à date identique ; non validé.
+Notifications : ne pas activer OneSignal durant TEST.
+
+INSTALLATION : extraire le ZIP ; dans le dépôt GitHub cattenom-v19-test, remplacer à la racine index.html, config.js, logo.png. Ne pas toucher au site V18 Netlify.
+
+TESTS : vérifier d'abord Retirer sur une personne fictive de la séance du 30/10/2026 (20+2), puis 20+1 et promotion de Julie Lambert. Tester ensuite création de séance, ajout manuel, verrouillage, déplacement, annulation/rétablissement, gestion des utilisateurs et historiques.
