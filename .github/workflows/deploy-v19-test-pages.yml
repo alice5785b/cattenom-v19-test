@@ -1,0 +1,44 @@
+name: Publier V19 TEST sur GitHub Pages
+
+on:
+  push:
+    branches: [v19-test-github-pages]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: v19-test-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer V19 TEST
+        uses: actions/checkout@v4
+      - name: Vérifier la configuration TEST
+        shell: bash
+        run: |
+          grep -q "uqyvfkjgitufaxmswjzv.supabase.co" config.js
+          grep -q "EXPECTED_TEST_PROJECT='uqyvfkjgitufaxmswjzv'" index.html
+          test -f logo.png
+      - name: Préparer le site statique
+        shell: bash
+        run: |
+          mkdir -p _site
+          cp index.html config.js logo.png _site/
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Déployer V19 TEST
+        id: deployment
+        uses: actions/deploy-pages@v4
