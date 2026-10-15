@@ -10,8 +10,8 @@ if(!window.SUPABASE_URL || !window.SUPABASE_URL.includes(EXPECTED_TEST_PROJECT+'
 }
 // Mémorisation de la personne sélectionnée pour la future interface définitive.
 const V19_SELECTION_KEY='cattenom_v19_selected_person';
-function rememberV19Person(){const el=document.getElementById('pick');if(el)sessionStorage.setItem(V19_SELECTION_KEY,el.value);}
-function restoreV19Person(){const el=document.getElementById('pick');if(!el)return;const saved=sessionStorage.getItem(V19_SELECTION_KEY);if(saved&&[...el.options].some(o=>o.value===saved))el.value=saved;el.addEventListener('change',rememberV19Person);}
+function rememberV19Person(){const el=document.getElementById('pick');if(el)localStorage.setItem(V19_SELECTION_KEY,el.value);}
+function restoreV19Person(){const el=document.getElementById('pick');if(!el)return;const saved=localStorage.getItem(V19_SELECTION_KEY);if(saved&&[...el.options].some(o=>o.value===saved))el.value=saved;el.addEventListener('change',rememberV19Person);}
 const sb=window.supabase.createClient(window.SUPABASE_URL,window.SUPABASE_ANON_KEY,{auth:{detectSessionInUrl:false,persistSession:true,autoRefreshToken:true}});const root=document.getElementById('root');let me=null;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function fr(d){return new Date(d+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}
