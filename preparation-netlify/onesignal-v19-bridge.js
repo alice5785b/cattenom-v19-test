@@ -11,6 +11,7 @@
   let initialized = false;
   let connectedUserId = null;
   let listenersAttached = false;
+  let saveCurrentSubscription = null;
   window.V19PushBridge = {
     async connect(userId, saveSubscription) {
       if (location.origin !== PRODUCTION_ORIGIN) return;
@@ -27,10 +28,11 @@
         }
         await OneSignal.login(String(userId));
         connectedUserId = String(userId);
+        saveCurrentSubscription = saveSubscription;
         const save = async () => {
           const id = OneSignal.User.PushSubscription.id;
           const opted = OneSignal.User.PushSubscription.optedIn;
-          if (opted && id) await saveSubscription(id);
+          if (opted && id && saveCurrentSubscription) await saveCurrentSubscription(id);
         };
         if (!listenersAttached) {
           OneSignal.User.PushSubscription.addEventListener('change', save);
@@ -46,6 +48,7 @@
       window.OneSignalDeferred.push(async function (OneSignal) {
         if (connectedUserId) await OneSignal.logout();
         connectedUserId = null;
+        saveCurrentSubscription = null;
       });
     }
   };
