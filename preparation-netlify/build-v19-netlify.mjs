@@ -13,7 +13,12 @@ if (!html.includes("const EXPECTED_TEST_PROJECT='"+expectedProject+"'")) throw E
 if (!html.includes('async function connectV19Push()')) throw Error('Raccordement push V19 absent');
 const marker = '<script src="config.js"></script>';
 if (!html.includes(marker)) throw Error('Balise config introuvable');
-html = html.replace(marker, marker + '\n<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>\n<script src="onesignal-v19-bridge.js" defer></script>');
+if (!html.includes('src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"')) {
+  html = html.replace(marker, marker + '\n<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>');
+}
+if (!html.includes('src="onesignal-v19-bridge.js"')) {
+  html = html.replace(marker, marker + '\n<script src="onesignal-v19-bridge.js" defer></script>');
+}
 html = html.replace('<title>V19 TEST — Fonctions regroupées</title>', '<title>Renforcement musculaire Cattenom</title>');
 html = html.replace(/<div class="testbanner">.*?<\/div>/s, '');
 html = html.replaceAll('V19 TEST', 'V19');
