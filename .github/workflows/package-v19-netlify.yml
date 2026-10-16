@@ -4,6 +4,12 @@ on:
     branches: [v19-preparation-production]
     paths:
       - 'preparation-netlify/**'
+      - 'index.html'
+      - 'config.js'
+      - 'onesignal-v19-bridge.js'
+      - 'onesignalsdkworker.js'
+      - 'netlify.toml'
+      - 'logo.png'
       - '.github/workflows/package-v19-netlify.yml'
   workflow_dispatch:
 jobs:
@@ -32,6 +38,8 @@ jobs:
           grep -q 'uqyvfkjgitufaxmswjzv.supabase.co' "$d/config.js"
           grep -q 'v19_set_onesignal_subscription_id' "$d/index.html"
           grep -q 'OneSignalSDK.page.js' "$d/index.html"
+          grep -q 'Notifications des séances' "$d/index.html"
+          grep -q 'requestPermission' "$d/onesignal-v19-bridge.js"
           grep -q 'OneSignalSDK.sw.js' "$d/onesignalsdkworker.js"
           # V19 définitive : aucune simulation, et push conservé après déconnexion.
           test ! -e "$d/simulation-v19-test-validation-globale.html"
