@@ -24,6 +24,7 @@ if (html.includes('simulation-v19-test-validation-globale.html')) throw Error('L
 await mkdir(output, {recursive:true});
 await writeFile(join(output, 'index.html'), html);
 for (const file of ['config.js','logo.png']) await copyFile(join(root,file),join(output,file));
-for (const file of ['onesignal-v19-bridge.js','onesignalsdkworker.js','netlify.toml']) await copyFile(join(root,'preparation-netlify',file),join(output,file));
+await copyFile(join(root,'onesignal-v19-bridge.js'),join(output,'onesignal-v19-bridge.js'));
+for (const file of ['onesignalsdkworker.js','netlify.toml']) await copyFile(join(root,'preparation-netlify',file),join(output,file));
 console.log('Dossier créé : preparation-netlify/dist-v19');
 console.log('AUCUN déploiement effectué. V18 reste intacte.');
