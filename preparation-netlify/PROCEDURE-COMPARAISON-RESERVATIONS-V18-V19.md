@@ -1,3 +1,9 @@
+# Procédure de comparaison V18 → V19 — ARCHIVÉE
+
+**Décision utilisateur du 16 octobre 2026 : comparaison préalable annulée.** L’utilisateur contrôlera manuellement les réservations après le déploiement de V19 sur Netlify. Ce document est conservé uniquement comme historique ; **aucune étape de comparaison préalable ne doit bloquer la préparation ni le déploiement autorisé**. Ne pas supprimer ni réinitialiser les réservations V19. Aucune égalité exhaustive V18/V19 n’est certifiée.
+
+---
+
 # Procédure de comparaison et de contrôle V18 → V19
 
 **Statut actualisé au 16 octobre 2026 : migration/nettoyage V19 effectués, 9 contrôles SQL à 0 anomalie ; aucun déploiement.**
