@@ -1,7 +1,7 @@
 name: Préparer paquet V19 Netlify (sans déploiement)
 on:
   push:
-    branches: [v19-test-github-pages]
+    branches: [v19-preparation-production]
     paths:
       - 'preparation-netlify/**'
       - '.github/workflows/package-v19-netlify.yml'
