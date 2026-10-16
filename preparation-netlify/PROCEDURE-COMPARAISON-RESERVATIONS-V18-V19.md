@@ -1,6 +1,6 @@
 # Procédure de comparaison et de contrôle V18 → V19
 
-**Statut : préparation uniquement — aucun déploiement, aucune modification de réservation.**
+**Statut actualisé au 16 octobre 2026 : migration/nettoyage V19 effectués, 9 contrôles SQL à 0 anomalie ; aucun déploiement.**
 
 ## Objectif
 Juste avant la bascule, contrôler **toutes les séances ouvertes** (lundi et jeudi) : inscriptions confirmées et listes d'attente. Vérifier les **personnes**, pas seulement les compteurs. Ne pas tester la modification des séances.
@@ -36,4 +36,8 @@ Possible seulement si les exports et la correspondance des personnes sont prêts
 Pas de modification de séances ; pas d'activation OneSignal ; pas de bascule Netlify dans cette procédure. Les tests de notifications sont prévus **après** la bascule, sur autorisation explicite.
 
 ## État
-Cette procédure est un document de préparation. **Aucune comparaison réelle des données V18/V19 n'a encore été effectuée.**
+**Travaux réalisés :** comptes et réservations manquants migrés dans V19, dont Gaël SIMON, Florence DEBAILLIEUL et Marc FESERT ; 22 comptes fictifs, compte Al B, réservations associées et séance supplémentaire du 31 octobre supprimés ; **9 contrôles SQL V19 à 0 anomalie**, confirmés par l'utilisateur.
+
+**Portée des contrôles :** cohérence de V19 validée. Aucune preuve enregistrée ici d'une comparaison exhaustive ligne par ligne avec l'état actuel de V18 ; ne pas affirmer une identité totale des deux bases sur cette seule base.
+
+**Décision utilisateur :** ne pas répéter les vérifications déjà faites. Raccordement OneSignal déjà effectué ; tests réels de notifications uniquement après déploiement. V18 reste intacte avant accord explicite.
