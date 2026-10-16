@@ -15,3 +15,10 @@ La simulation est exclue. Les notifications OneSignal ne sont pas déconnectées
 - Conserver la sélection du participant après inscription, annulation et actualisation.
 - Le raccordement OneSignal a déjà été effectué ; ne pas le refaire. Tester les notifications réelles seulement après la publication.
 - Aucun nouveau test demandé ; ne pas toucher à V18 avant accord de déploiement.
+
+## Dernières modifications Supabase V19 — 16 octobre 2026
+- Nettoyage du journal `public.booking_cancellations` : suppression ciblée de **5 annulations de test** : 3 concernant `test01@example.com` / `baroni_alice@hotmail.com`, et 2 concernant `baroni.alice@gmail.com` pour les séances des **15 et 19 octobre**.
+- Contrôles de confirmation exécutés par l'utilisateur : **0 annulation restante** pour les adresses fictives `testXX@example.com` et `baroni_alice@hotmail.com`, et **0** pour `baroni.alice@gmail.com` sur les deux séances ciblées.
+- Aucun compte utilisateur ni réservation actuelle ciblé par ces suppressions ; V18 non modifiée. La table de sauvegarde `backup_annulations_test_20261014` reste conservée.
+- Ces modifications sont **des données Supabase V19**, non des changements du code source : le paquet Netlify n'a pas à être modifié pour les refléter.
+- Le **18 octobre**, comparer uniquement les réservations des **19 et 22 octobre** entre V18 et V19 ; corriger dans Supabase V19 les écarts confirmés, puis produire le dernier paquet depuis GitHub avant toute bascule Netlify autorisée.
