@@ -42,6 +42,17 @@
         await save();
       });
     },
+    async requestPermission() {
+      if (location.origin !== PRODUCTION_ORIGIN) return;
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      window.OneSignalDeferred.push(async function (OneSignal) {
+        if (!initialized) {
+          await OneSignal.init({appId: APP_ID, notifyButton: {enable: false}, autoResubscribe: true});
+          initialized = true;
+        }
+        await OneSignal.Notifications.requestPermission();
+      });
+    },
     disconnect() {
       if (location.origin !== PRODUCTION_ORIGIN) return;
       window.OneSignalDeferred = window.OneSignalDeferred || [];
