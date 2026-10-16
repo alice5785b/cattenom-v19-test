@@ -26,7 +26,7 @@ async function connectV19Push(){
 }
 // Bandeau notifications : uniquement sur le domaine Netlify définitif.
 function v19PushBanner(){
- if(location.hostname==='alice5785b.github.io')return '<div class="note" id="v19PushBanner"><b>🔔 Notifications des séances</b><div style="margin:7px 0">Aperçu du bandeau. L’activation sera disponible sur Netlify après la mise en production.</div><button class="primary" disabled>Activer les notifications (bientôt)</button></div>';
+ if(location.hostname==='alice5785b.github.io')return '<div class="note" id="v19PushBanner"><b>🔔 Notifications des séances</b><div style="margin:7px 0">Activez les notifications pour recevoir les informations concernant vos séances.</div><button class="primary" disabled>Activer les notifications</button></div>';
  if(location.origin!=='https://renfomusculairecattenom.netlify.app'||!('Notification' in window))return '';
  const state=Notification.permission;
  if(state==='granted')return '<div class="ok" id="v19PushBanner">🔔 Notifications autorisées sur cet appareil.</div>';
