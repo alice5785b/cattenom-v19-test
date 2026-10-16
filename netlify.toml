@@ -1,15 +1,8 @@
-# V19 TEST : publication statique, branche de preparation uniquement
-[build]
-  publish = "."
-
+# Modèle de configuration pour le futur déploiement V19 sur Netlify.
+# Ce fichier est volontairement isolé du site V19 TEST.
 [[headers]]
-  for = "/*"
+  for = "/onesignalsdkworker.js"
   [headers.values]
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    X-Frame-Options = "DENY"
-
-[[headers]]
-  for = "/config.js"
-  [headers.values]
-    Cache-Control = "no-store, max-age=0"
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Service-Worker-Allowed = "/"
+    Content-Type = "application/javascript; charset=utf-8"
