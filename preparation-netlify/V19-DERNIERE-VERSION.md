@@ -22,3 +22,10 @@ La simulation est exclue. Les notifications OneSignal ne sont pas déconnectées
 - Aucun compte utilisateur ni réservation actuelle ciblé par ces suppressions ; V18 non modifiée. La table de sauvegarde `backup_annulations_test_20261014` reste conservée.
 - Ces modifications sont **des données Supabase V19**, non des changements du code source : le paquet Netlify n'a pas à être modifié pour les refléter.
 - Décision actualisée le 16 octobre 2026 : l’utilisateur renonce à la comparaison préalable des réservations V18/V19. Il vérifiera manuellement les réservations après le déploiement autorisé. Ne pas bloquer la préparation ou la bascule sur cette comparaison. Conserver toutes les réservations V19 existantes ; ne pas prétendre à une égalité exhaustive V18/V19.
+
+## Synchronisation des inscriptions — 18 octobre 2026
+- Les inscriptions des séances du **lundi 19 octobre 2026** et du **jeudi 22 octobre 2026** ont été rapprochées des listes de V18 Production transmises par l'utilisateur.
+- Résultat communiqué et confirmé par l'utilisateur après exécution dans Supabase V19 : **13 inscrits le 19 octobre** et **11 inscrits le 22 octobre**, soit **24 inscriptions** au total ; contrôle nominatif déclaré conforme aux listes V18.
+- Corrections ciblées : retirer Geoffrey GREBERT des deux séances, retirer Adeline BARBA du 19 octobre, ajouter Delphine LEROY au 19 octobre.
+- Cette synchronisation concerne **les données Supabase V19 uniquement**. Aucun changement du code applicatif, aucun déploiement Netlify et aucune modification de V18 Production.
+- Les effectifs et listes ci-dessus sont un **état ponctuel au 18 octobre**, non une garantie de correspondance permanente si de nouvelles réservations ou annulations interviennent.
