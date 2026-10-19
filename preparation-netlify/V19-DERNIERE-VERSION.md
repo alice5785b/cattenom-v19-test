@@ -29,3 +29,10 @@ La simulation est exclue. Les notifications OneSignal ne sont pas déconnectées
 - Corrections ciblées : retirer Geoffrey GREBERT des deux séances, retirer Adeline BARBA du 19 octobre, ajouter Delphine LEROY au 19 octobre.
 - Cette synchronisation concerne **les données Supabase V19 uniquement**. Aucun changement du code applicatif, aucun déploiement Netlify et aucune modification de V18 Production.
 - Les effectifs et listes ci-dessus sont un **état ponctuel au 18 octobre**, non une garantie de correspondance permanente si de nouvelles réservations ou annulations interviennent.
+
+## Actualisation des inscriptions — 19 octobre 2026
+- Selon les captures de V18 et V19 fournies par l'utilisateur, V18 affichait **14 inscrits le lundi 19 octobre** et **13 inscrits le jeudi 22 octobre**, contre 13 et 11 dans V19 avant correction.
+- Ajouts ciblés demandés dans Supabase V19 : **Nicolas GOEURIOT** le 19 et le 22 octobre, **Frédéric BERNHARD** le 22 octobre.
+- L'utilisateur a confirmé le **19 octobre 2026** que le SQL d'ajout avait été exécuté sans problème. Effectifs attendus après correction : **14** et **13**.
+- Les listes nominatives V19 après cette opération restent à revérifier si une confirmation exhaustive est nécessaire ; les chiffres ci-dessus ne sont pas une lecture directe de la base par GitHub.
+- **Aucun changement du code de V19, aucun déploiement Netlify, aucune modification de V18 Production.**
