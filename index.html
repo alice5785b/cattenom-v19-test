@@ -113,10 +113,17 @@ async function loadSessionHistory(){
  if(error){target.textContent='Impossible de charger l’historique : '+error.message;return;}
  const rows=data||[];
  if(!rows.length){target.textContent='Aucune séance trouvée pour cette période.';return;}
- target.innerHTML=rows.map((r,i)=>`<div class="session"><b>${esc(fr(r.session_date))}</b><div class="muted">${Number(r.booked_count)||0} inscrit(s) · ${Number(r.wait_count)||0} en attente · ${Number(r.cancellation_count)||0} annulation(s)</div><button class="ghost" style="margin-top:8px" onclick="showSessionCancellations('${esc(r.session_date)}', 'historyCancel${i}')">Voir les annulations</button><div id="historyCancel${i}" style="margin-top:8px"></div></div>`).join('');
+ target.innerHTML=rows.map((r,i)=>`<div class="session"><b>${esc(fr(r.session_date))}</b><div class="muted">${Number(r.booked_count)||0} inscrit(s) · ${Number(r.wait_count)||0} en attente · ${Number(r.cancellation_count)||0} annulation(s)</div><button class="ghost" style="margin-top:8px" onclick="showSessionCancellations('${esc(r.session_date)}', 'historyCancel${i}', this)">Voir les annulations</button><div id="historyCancel${i}" style="margin-top:8px"></div></div>`).join('');
 }
-async function showSessionCancellations(date,id){
+async function showSessionCancellations(date,id,button){
  const target=document.getElementById(id);if(!target)return;
+ if(target.dataset.expanded==='true'){
+  target.replaceChildren();target.dataset.expanded='false';
+  if(button)button.textContent='Voir les annulations';
+  return;
+ }
+ target.dataset.expanded='true';
+ if(button)button.textContent='Masquer les annulations';
  target.textContent='Chargement des annulations…';
  const {data,error}=await sb.rpc('admin_session_cancellations',{p_session_date:date});
  if(error){target.textContent='Impossible de charger les annulations : '+error.message;return;}
