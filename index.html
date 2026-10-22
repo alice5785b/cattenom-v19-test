@@ -164,7 +164,25 @@ let verb=isActive?'réactiver':'désactiver';if(!confirm(`Voulez-vous ${verb} ce
 async function deleteUser(id,email){
 if(!confirm('Archiver cette personne ? Son accès sera désactivé, ses réservations conservées.'))return;const {error}=await sb.rpc('admin_archive_user',{p_user_id:id});if(error)return alert(error.message);alert('Participant archivé.');admin()}
 async function invite(){
-const full_name=an.value.trim(),email=ae.value.trim();if(!full_name||!email)return alert('Nom et e-mail obligatoires.');amsg.textContent='Ajout en cours…';const {data:id,error}=await sb.rpc('admin_add_user',{p_full_name:full_name,p_email:email});if(error){amsg.textContent=error.message;return}amsg.textContent='Participant autorisé ajouté. La personne peut utiliser « Première connexion » si Supabase Auth autorise les inscriptions. Aucun e-mail d’invitation administrateur n’est envoyé.';alert('Participant ajouté à la liste autorisée. Aucun e-mail envoyé.');admin()}
+ const full_name=an.value.trim(),email=ae.value.trim();
+ if(!full_name||!email)return alert('Nom et e-mail obligatoires.');
+ const button=document.querySelector('button[onclick="invite()"]');
+ if(button)button.disabled=true;
+ amsg.textContent='Ajout et envoi de l’invitation en cours…';
+ try{
+  const {data,error}=await sb.functions.invoke('invite-user',{body:{full_name,email}});
+  if(error){
+   const details=typeof error.context?.json==='function'?await error.context.json().catch(()=>null):null;
+   const message=details?.error||data?.error||error.message;
+   amsg.textContent=details?.person_saved?'Participant enregistré, mais invitation non envoyée : '+message:'Ajout impossible : '+message;
+   return;
+  }
+  if(data?.error||data?.success!==true){amsg.textContent=data?.error||'Réponse inattendue du service d’invitation.';return;}
+  alert('Participant ajouté et invitation envoyée.');
+  await admin(0);
+ }catch(e){amsg.textContent='Impossible de terminer l’invitation : '+(e?.message||'Erreur inconnue');}
+ finally{if(button?.isConnected)button.disabled=false;}
+}
 async function promoteUser(id){
 if(!confirm('Donner les droits administrateur à cette personne ?'))return;const {error}=await sb.rpc('admin_promote_user',{p_user_id:id});if(error)return alert(error.message);admin()}
 function sessionConfirm(message){
